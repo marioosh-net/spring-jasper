@@ -7,17 +7,13 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -47,26 +43,10 @@ public class SpringWebApp implements WebApplicationInitializer {
 		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(response.getOutputStream()));
 		
 		response.setContentType("application/pdf");
-		//response.setHeader("Content-Disposition", "attachment; filename=\"test.pdf\"");		
+		response.setHeader("Content-Disposition", "attachment; filename=\"test.pdf\"");		
 		exporter.exportReport();
 	}
 	
-	/**
-	 * jsp View Resolver
-	 * @return
-	 */
-	@Bean
-	public ViewResolver internalViewResolver() {
-		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		resolver.setViewClass(JstlView.class);
-		resolver.setSuffix(".jsp");
-		/**
-		 * put Your .jsp in src/main/webapp/WEB-INF/views/ directory
-		 */
-		resolver.setPrefix("/WEB-INF/views/");
-		return resolver;
-	}
-
 	/**
 	 * initialize Spring Dispatcher Servlet 
 	 * required Servlet Container 3.0+
